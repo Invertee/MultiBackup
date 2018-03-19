@@ -1,4 +1,8 @@
 function Disable-SslValidation {
+    # Allow all SSL schemes
+    $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
+    [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+
     if (-not ([System.Management.Automation.PSTypeName]"TrustEverything").Type)
     {
     Add-Type -TypeDefinition  @"
