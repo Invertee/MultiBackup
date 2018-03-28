@@ -5,6 +5,8 @@ $FunctionsToExport = @(
     'Get-DraytekConfig',
     'Get-HPSwitchConfig',
     'Get-ZonedirectorConfig',
+    'Get-SmoothwallConfig',
+    'Get-QNAPConfig'
     'New-BackupSchedule',
     'Disable-SslValidation'
 )

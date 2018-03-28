@@ -10,3 +10,6 @@ if ($_.DevicePSWD -ne '--') {
 }
 }
 $Config | Export-Csv $BackupRoot\Config.csv -NoTypeInformation
+
+# Load device config
+$Config = Import-Csv $BackupRoot\Config.csv
