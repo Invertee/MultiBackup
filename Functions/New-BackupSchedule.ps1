@@ -103,22 +103,25 @@ switch ($Option)
         
     "S" {
         $ABF = Test-Path $BackupRoot
-        If ($ABF -eq $false) {New-Item -Path "$BackupRoot\Backups" -ItemType Directory | Out-Null}
+        If ($ABF -eq $false) {
+            New-Item -Path "$BackupRoot\Scripts" -ItemType Directory | Out-Null
+            New-Item -Path "$BackupRoot\ConfigBackups" -ItemType Directory | Out-Null
+        }
 
         $Devicelist | Select-Object -Property "DeviceID","DeviceName","DeviceIP","DeviceUser" | Format-table -Auto 
         
         # Asks to Overwrite Config
-        $ConfigAlreadyExist = Test-path "$BackupRoot\Config.csv"
+        $ConfigAlreadyExist = Test-path "$BackupRoot\Scripts\Config.csv"
         if ($ConfigAlreadyExist -eq $true) {
         [ValidateSet('Y','N')]$Answer = Read-Host "Overwrite Config?"
-        If ($Answer -eq 'Y') {$Devicelist | Export-Csv -path "$BackupRoot\Config.csv" -Force | out-null
+        If ($Answer -eq 'Y') {$Devicelist | Export-Csv -path "$BackupRoot\Scripts\Config.csv" -Force | out-null
         }
-        } ELSE {$Devicelist | Export-Csv -path "$BackupRoot\Config.csv" | out-null}
+        } ELSE {$Devicelist | Export-Csv -path "$BackupRoot\Scripts\Config.csv" | out-null}
 
         # Copy backup script from module directory
         $ListModules = Get-Module 'MultiBackup' -ListAvailable
         $ModulePath = $ListModules.ModuleBase 
-        Copy-Item "$ModulePath\Scripts\Backup-Devices.ps1" $BackupRoot
+        Copy-Item "$ModulePath\Scripts\Backup-Devices.ps1" "$BackupRoot\scripts\Backup-Devices.ps1"
 
         # Remove any existing task and creates a new one.
         $taskexist = Get-ScheduledTask "MultiBackup"
